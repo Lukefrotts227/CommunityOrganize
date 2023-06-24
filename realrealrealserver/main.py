@@ -18,7 +18,6 @@ from fastapi.security import OAuth2PasswordBearer
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
-
 origins = [
     "http://localhost:3000",
     "http://localhost:8000",
@@ -37,6 +36,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 mongodb_uri = os.getenv("MONGO_URI")
+openai_key = os.getenv("OPENAI_KEY")
 
 port = 8000
 
@@ -59,9 +59,17 @@ class Communiy(BaseModel):
     state: str
     town: str
 
+class Post(BaseModel): 
+    contents: str
+    kind: str
+    creator: str
+    liked: int
+
 
 def community_handle():
     pass
+
+
 
 
 '''

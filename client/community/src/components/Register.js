@@ -20,19 +20,34 @@ const Register = () => {
     }
 
     const handleRegister = async (e) => { 
+        e.preventDefault(); 
         if (password !== confirmPassword){
             alert("Passwords do not match"); 
             return;
         }
-
-        await axios
-        .post('http://localhost:8000/register', {username: username, password: password})
-        .then((response) => {
-            console.log(response.data); 
-        })
-        .catch((error) => {
-            console.error("Error", error); 
-        })
+        const registrationData = {
+            username: username,
+            password: password,
+          };
+      
+          // Send a POST request to the backend API endpoint
+          fetch('http://localhost:8000/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(registrationData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Handle the response from the backend
+              console.log(data); // Display the response data
+              // Perform any necessary actions based on the response
+            })
+            .catch((error) => {
+              console.error('Error', error);
+              // Handle any errors that occurred during the request
+            });
         setConfirmPassword('');
         setPassword('');
         setUsername('');
