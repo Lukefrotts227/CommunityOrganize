@@ -164,13 +164,13 @@ def create_user(request:User):
 
 def generate_community_phrase():
     # Community-related prompt
-    prompt = "Community is like a"
+    prompt = "Give me a pun about community and working toeghter"
 
     # Make the API call to OpenAI
     response = openai.Completion.create(
         engine='text-davinci-003',
         prompt=prompt,
-        max_tokens=20,  # Adjust the number of tokens as per your requirements
+        max_tokens=33,  # Adjust the number of tokens as per your requirements
         temperature=0.5,  # Adjust the temperature value to control the output randomness
         top_p=1.0,  # Adjust the top_p value to control the diversity of the output
         n=1,  # Adjust the number of responses to generate

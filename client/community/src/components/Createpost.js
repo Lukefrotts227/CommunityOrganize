@@ -1,6 +1,6 @@
 import React, { useState } from 'react'; 
 import axios from 'axios'; 
-
+import "./styles/poster.css"
 
 const Creatpost = () => {
     const [title, setTitle] = useState(''); 
@@ -35,23 +35,22 @@ const Creatpost = () => {
         setTitle(''); 
 
     }
-    return(
-        <div>
-            <h1> MAX OF 60 WORDS AND GIVE A UNIQUE TITLE</h1>
-            <form onSubmit={handleSubmit}>
-                <div> 
-                    <label htmlFor="title"> Title: </label>
-                    <input type="text" id="title" value={title} onChange={handleTitle}/>
-                </div> 
-                <div>
-                    <label htmlFor="content"> Content Here: </label>
-                    <input type="text" id="content" value={content} onChange={handleContent}/>
-                </div>
-                <button type="submit"> Submit data </button>
-            </form>
-            
+    return (
+        <div className="container">
+          <h1>MAX OF 60 WORDS AND GIVE A UNIQUE TITLE</h1>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="title">Title:</label>
+              <input type="text" id="title" value={title} onChange={handleTitle} />
+            </div>
+            <div>
+              <label htmlFor="content">Content Here:</label>
+              <textarea id="content" value={content} onChange={handleContent} rows={6} />
+            </div>
+            <button type="submit">Submit Data</button>
+          </form>
         </div>
-    );
+      );
 }
 
 export default Creatpost; 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'; 
 import axios from 'axios'; 
-
+import "./styles/entrance.css"
 
 
 const Community = ({ onCommunitySuccess }) => {
@@ -36,7 +36,7 @@ const Community = ({ onCommunitySuccess }) => {
 
 
     return(
-        <div>
+        <div className = "container">
             <h1> {sessionStorage.getItem("username")}, we notice that you are not part of a community. Allow us to fix that </h1> 
             <form onSubmit={handleCommunity}>
             <input type="text" placeholder="town" value={town} onChange={handleTownChange}/>

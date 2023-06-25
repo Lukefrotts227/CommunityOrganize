@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
+import "./styles/entrance.css"
 
 
 const Login = ({ onLoginSuccess }) => {
@@ -49,7 +50,7 @@ const Login = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div>
+    <div className = "container">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input

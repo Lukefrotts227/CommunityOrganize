@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import Community from "./components/Community";
 import Dashboard from "./components/Dashboard"; 
 import Creatpost from "./components/Createpost";
-
+import "./App.css";
 
 
 
@@ -100,12 +100,12 @@ function App() {
     return(
       <Router>
       <div>
-        <nav> 
-          <ul>
-            <li>
+        <nav className = "navbar"> 
+          <ul className = "navbar-links">
+            <li className = "navbar-link">
                 <Link to="/dashboard" > Main dash </Link>
             </li>
-            <li> 
+            <li className = "navbar-link"> 
                 <Link to="/createpost"> Click to make a post </Link> 
             </li>
           </ul>

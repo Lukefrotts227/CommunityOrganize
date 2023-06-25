@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react"; 
-import {Link, useNavigate} from "react-router-dom"
+import "./styles/entrance.css"
 import axios from "axios"
 
 const Register = ({ onRegisterSuccess } ) => {
@@ -55,7 +55,7 @@ const Register = ({ onRegisterSuccess } ) => {
 
 
     return (
-        <div> 
+        <div className = "container"> 
             <h2> Registration </h2>
             <form onSubmit={handleRegister}>
             <input type = "username" placeholder="Username" value={username} onChange ={handleUsernameChange}/>
