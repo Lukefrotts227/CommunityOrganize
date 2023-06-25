@@ -15,8 +15,8 @@ const Creatpost = () => {
 
     const data = {
         title: title,
-        content: content,
-        user: sessionStorage.getItem('username')
+        contents: content,
+        creator: sessionStorage.getItem('username')
     }
 
     const handleSubmit = async (e) => {
@@ -40,11 +40,11 @@ const Creatpost = () => {
             <h1> MAX OF 60 WORDS AND GIVE A UNIQUE TITLE</h1>
             <form onSubmit={handleSubmit}>
                 <div> 
-                    <label htmlfor="title"> Title: </label>
+                    <label htmlFor="title"> Title: </label>
                     <input type="text" id="title" value={title} onChange={handleTitle}/>
                 </div> 
                 <div>
-                    <label htmlfor="content"> Content Here: </label>
+                    <label htmlFor="content"> Content Here: </label>
                     <input type="text" id="content" value={content} onChange={handleContent}/>
                 </div>
                 <button type="submit"> Submit data </button>

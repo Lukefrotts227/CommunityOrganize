@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'; 
+import React, { useState } from 'react'; 
 import axios from 'axios'; 
-import { UserContext } from './Provider';
+
 
 
 const Community = ({ onCommunitySuccess }) => {
@@ -33,6 +33,8 @@ const Community = ({ onCommunitySuccess }) => {
         }
 
     }
+
+
     return(
         <div>
             <h1> {sessionStorage.getItem("username")}, we notice that you are not part of a community. Allow us to fix that </h1> 

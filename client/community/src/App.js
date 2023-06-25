@@ -23,7 +23,7 @@ function App() {
 
   const handleRegisterSuccess = () => {
     setIsRegistered(true);
-    if (isLoggedIn || isRegistered && inCommunity){
+    if (isRegistered && inCommunity){
       setAdvance(true); 
   }
 
@@ -31,16 +31,20 @@ function App() {
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
-    if (isLoggedIn || isRegistered && inCommunity){
+    if (isLoggedIn){
+      console.log("here")
       setAdvance(true); 
   }
-    console.log(inCommunity)
+    setAdvance(true)
+    console.log(advance1)
+    console.log(true)
 
   };
 
   const handleCommunitySuccess = () => {
     setInCommunity(true); 
-    if (isLoggedIn || isRegistered && inCommunity){
+    console.log(advance1);
+    if (isRegistered && inCommunity){
       setAdvance(true); 
   }
   }
@@ -83,21 +87,11 @@ function App() {
     ); 
   }
 
-  if (isRegistered){
+  if (isRegistered && !advance1){
     return(
     <Router>
       <div>
-        <nav>
-          <ul> 
-            <li>
-              <Link to="/community"> Community </Link> 
-            </li>
-          </ul>
-        </nav> 
-        <Routes> 
-          
-          <Route path="/community" element={<Community onCommunitySuccess={handleCommunitySuccess} />} />
-        </Routes> 
+        <Community onCommunitySuccess={handleCommunitySuccess} />
       </div>
     </Router>
     );
@@ -118,7 +112,7 @@ function App() {
         </nav>
         <Routes> 
           <Route path="/dashboard" element = {<Dashboard/>}/>
-          <Route path="/createpost" element = {<Createpost/>}/>
+          <Route path="/createpost" element ={<Creatpost/>}/>
         </Routes> 
       </div>
 

@@ -3,6 +3,8 @@ import openai
 from pydantic import BaseModel
 from typing import Optional
 from pymongo import MongoClient
+from fastapi.responses import JSONResponse
+import json
 import os 
 from dotenv import load_dotenv
 from passlib.context import CryptContext
@@ -204,14 +206,33 @@ def summarize_text(text):
         return None
 
 # giving community data
-@app.get("/givecom")
-def giveCom():
+@app.get("/givecom{user}")
+def giveCom(user: str):
     pass
 
 # give post data 
-@app.get("/giveposts")
-def givePosts(): 
-    pass
+@app.get("/giveposts/{user}")
+def givePosts(user: str):
+    person = users_collection.find_one({"username": user})
+    state = person["state"]
+    town = person["town"]
+    cursor = post_collection.find()
+    out = []
+    for doc in cursor:
+        pers = users_collection.find_one({"username": doc["user"]})
+        if pers["state"] == state and pers["town"] == town:
+            # Convert ObjectId to string
+            doc["_id"] = str(doc["_id"])
+            out.append(doc)
+    json_data = json.dumps(out)
+
+    # Send the JSON response
+    return JSONResponse(content=json_data)
+
+
+
+
+
 
 @app.post("/createpost")
 def getpost(post: Post):
@@ -231,7 +252,7 @@ def getpost(post: Post):
 
     new_post = {
         "content" : contents,
-        "user": user,
+        "user": user["username"],
         "title": title,
         "summary": summary
 
@@ -308,12 +329,6 @@ def community(community: Community):
 
 
 
-    
-    
-
-
-        
-
 @app.post("/login")
 def login(login: Login):
     print(login)
@@ -327,4 +342,4 @@ def login(login: Login):
 
 @app.get('/')
 def index():
-    return {'data':generate_community_phrase()}
+    return {'data': generate_community_phrase()}
