@@ -33,7 +33,7 @@ const Dashboard = () => {
         data.map((item) => (
           <div key={item.id}>
             <h2>{item.title}</h2>
-            <p>{item.contents}</p>
+            <p>{item.content}</p>
             <h2> Summary or Alternate </h2>
             <p>{item.summary}</p>
           </div>

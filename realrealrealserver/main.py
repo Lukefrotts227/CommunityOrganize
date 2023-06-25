@@ -189,7 +189,7 @@ def summarize_text(text):
     # Make the API call to OpenAI
     response = openai.Completion.create(
         engine='text-davinci-003',
-        prompt=text,
+        prompt="summarize or improve the readability of this text:" + text,
         max_tokens=100,  # Adjust the number of tokens as per your requirements
         temperature=0.3,  # Adjust the temperature value to control the output randomness
         top_p=1.0,  # Adjust the top_p value to control the diversity of the output
@@ -225,6 +225,7 @@ def givePosts(user: str):
             doc["_id"] = str(doc["_id"])
             out.append(doc)
     json_data = json.dumps(out)
+    print(json_data)
 
     # Send the JSON response
     return JSONResponse(content=json_data)
