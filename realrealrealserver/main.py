@@ -72,10 +72,6 @@ class Post(BaseModel):
 
 
 
-class MachineLearning:
-    def ___init__(self):
-        pass
-
 
 
 '''
@@ -163,15 +159,89 @@ def create_user(request:User):
    return {"res":"created"}
 '''
 
+
+def generate_community_phrase():
+    # Community-related prompt
+    prompt = "Community is like a"
+
+    # Make the API call to OpenAI
+    response = openai.Completion.create(
+        engine='text-davinci-003',
+        prompt=prompt,
+        max_tokens=20,  # Adjust the number of tokens as per your requirements
+        temperature=0.5,  # Adjust the temperature value to control the output randomness
+        top_p=1.0,  # Adjust the top_p value to control the diversity of the output
+        n=1,  # Adjust the number of responses to generate
+        stop=None,  # You can specify a custom stop sequence if needed
+        timeout=15,  # Timeout in seconds (optional)
+    )
+
+    # Retrieve the generated phrase from the API response
+    if 'choices' in response and len(response['choices']) > 0:
+        phrase = response['choices'][0]['text'].strip()
+        return phrase
+    else:
+        return None
+
+def summarize_text(text):
+    # Make the API call to OpenAI
+    response = openai.Completion.create(
+        engine='text-davinci-003',
+        prompt=text,
+        max_tokens=100,  # Adjust the number of tokens as per your requirements
+        temperature=0.3,  # Adjust the temperature value to control the output randomness
+        top_p=1.0,  # Adjust the top_p value to control the diversity of the output
+        n=1,  # Adjust the number of responses to generate
+        stop=None,  # You can specify a custom stop sequence if needed
+        timeout=15,  # Timeout in seconds (optional)
+    )
+
+    # Retrieve the summarized text from the API response
+    if 'choices' in response and len(response['choices']) > 0:
+        summary = response['choices'][0]['text'].strip()
+        return summary
+    else:
+        return None
+
 # giving community data
 @app.get("/givecom")
 def giveCom():
     pass
 
 # give post data 
-@app.get("/givepost")
-def givePost(): 
+@app.get("/giveposts")
+def givePosts(): 
     pass
+
+@app.post("/createpost")
+def getpost(post: Post):
+    username = post.creator
+    contents = post.contents
+    title = post.title
+    user = users_collection.find_one({"username": username})
+    state = user["state"]
+    town = user["town"]
+    title = state + " " + town + ": " + title
+    findTitle = post_collection.find_one({"title": title})
+
+    if not findTitle == None : 
+        raise HTTPException(status_code=400, detail="Title is not unique")
+    
+    summary = summarize_text(contents)
+
+    new_post = {
+        "content" : contents,
+        "user": user,
+        "title": title,
+        "summary": summary
+
+    }
+
+
+    result = post_collection.insert_one(new_post)
+
+    return {"message": "post has been sent"}
+
 
 @app.post("/register")
 def register(user: Register):
@@ -254,17 +324,7 @@ def login(login: Login):
 
     raise HTTPException(status_code=401, detail="Invalid username or password")
 
-'''
-@app.post('/login')
-def login(request:OAuth2PasswordRequestForm = Depends()):
-    user = db["users"].find_one({"username":request.username})
-    if not user:
-       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    if not Hash.verify(user["password"],request.password):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    access_token = create_access_token(data={"sub": user["username"] })
-    return {"access_token": access_token, "token_type": "bearer"}
-'''
+
 @app.get('/')
 def index():
-    return {'data':'Hello World'}
+    return {'data':generate_community_phrase()}

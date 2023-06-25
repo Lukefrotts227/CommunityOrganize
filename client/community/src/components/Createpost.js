@@ -21,14 +21,23 @@ const Creatpost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); 
-        await axios.post('http://localhost:8000/createpost', data)
+        if (content > 60 ){
+            alert("Too much content")
+            return;
+        }
+        try{
+            await axios.post('http://localhost:8000/createpost', data);
+            setContent('');
+            }catch (error) {
+                console.error('Error', error)
+            }
 
         setTitle(''); 
 
     }
     return(
         <div>
-            <h1> MAX OF 50 WORDS AND GIVE A UNIQUE TITLE</h1>
+            <h1> MAX OF 60 WORDS AND GIVE A UNIQUE TITLE</h1>
             <form onSubmit={handleSubmit}>
                 <div> 
                     <label htmlfor="title"> Title: </label>
