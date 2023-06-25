@@ -54,7 +54,7 @@ function App() {
   {
     return(
       <Router>
-        <div>
+        <div className = "contain">
           <nav>
             <ul>
             <li>
@@ -90,7 +90,7 @@ function App() {
   if (isRegistered && !advance1){
     return(
     <Router>
-      <div>
+      <div className = "contain">
         <Community onCommunitySuccess={handleCommunitySuccess} />
       </div>
     </Router>
@@ -99,7 +99,7 @@ function App() {
   if(advance1){
     return(
       <Router>
-      <div>
+      <div className = "contain">
         <nav className = "navbar"> 
           <ul className = "navbar-links">
             <li className = "navbar-link">

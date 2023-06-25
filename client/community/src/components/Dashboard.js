@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import "./styles/postdisplay.css";
 import axios from 'axios';
 
 const Dashboard = () => {
@@ -24,7 +25,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
+    <div className = "container">
       <button onClick={handleRefresh}>Refresh</button>
       {data.length === 0 ? (
         <p>No posts available.</p>
@@ -33,6 +34,7 @@ const Dashboard = () => {
           <div key={item.id}>
             <h2>{item.title}</h2>
             <p>{item.contents}</p>
+            <h2> Summary or Alternate </h2>
             <p>{item.summary}</p>
           </div>
         ))
