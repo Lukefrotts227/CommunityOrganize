@@ -38,37 +38,43 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 mongodb_uri = os.getenv("MONGO_URI")
 openai_key = os.getenv("OPENAI_KEY")
 
+openai.api_key = openai_key
+
+
 port = 8000
 
 client = MongoClient(mongodb_uri,  port)
 db = client["User"]
 users_collection = db["users"]
+community_collection = db["community"]
+post_collection = db["posts"]
 
-class User(BaseModel):
+
+class Register(BaseModel):
     username: str
     password: str
-    community: str
-
 
 class Login(BaseModel):
     username: str
     password: str
 
-class Communiy(BaseModel):
-    country: str 
+class Community(BaseModel):
+    user: str 
     state: str
     town: str
 
 class Post(BaseModel): 
+    title: str
     contents: str
-    kind: str
     creator: str
-    liked: int
+    
 
 
-def community_handle():
-    pass
 
+
+class MachineLearning:
+    def ___init__(self):
+        pass
 
 
 
@@ -157,8 +163,19 @@ def create_user(request:User):
    return {"res":"created"}
 '''
 
+# giving community data
+@app.get("/givecom")
+def giveCom():
+    pass
+
+# give post data 
+@app.get("/givepost")
+def givePost(): 
+    pass
+
 @app.post("/register")
-def register(user: User):
+def register(user: Register):
+    print(user)
     # Check if the username is already taken
     existing_user = users_collection.find_one({"username": user.username})
     if existing_user:
@@ -167,7 +184,8 @@ def register(user: User):
     # Create a new user document
     new_user = {
         "username": user.username,
-        "password": user.password
+        "password": user.password,
+        "has_community": False
     }
 
     # Insert the new user into the collection
@@ -175,9 +193,60 @@ def register(user: User):
 
     return {"message": "Registration successful"}
 
+@app.post("/community")
+def community(community: Community): 
+    town = community.town
+    state = community.state 
+    user = community.user
+
+    query1 = {"state": state}
+    query2 = {"town": town}
+    query3 = {"username": user}
+
+    res = community_collection.find_one(query1)
+    if res is None: 
+        result = community_collection.insert_one({
+            "state": state, 
+            "town": town
+        })
+        update_query = {
+            "$set": {"state": state, "town": town, "has_community": True}
+        }
+        res = users_collection.update_one(query3, update_query)
+        return {"message": "You are the first member of a community"}
+        
+    else: 
+        res2 = community_collection.find_one({"$and": [query1, query2]})
+        if res2 is None:
+            result = community_collection.insert_one({
+                "state": state, 
+                "town": town
+            })
+            update_query = {
+                "$set": {"state": state, "town": town, "has_community": True}
+            }
+            res = users_collection.update_one(query3, update_query)
+            return {"message": "You are the first member of a community"}
+    
+    update_query = {
+        "$set": {"state": state, "town": town, "has_community": True}
+    }
+    result = users_collection.update_one(query3, update_query)
+
+    return {"message": "Success found a community for you"}
+
+
+
+
+    
+    
+
+
+        
 
 @app.post("/login")
 def login(login: Login):
+    print(login)
     # Find the user by username
     user = users_collection.find_one({"username": login.username})
     if user and user['password'] == login.password:
