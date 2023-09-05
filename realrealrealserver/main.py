@@ -204,6 +204,19 @@ def summarize_text(text):
         return summary
     else:
         return None
+    
+def cool_tip():
+
+    response = openai.Completion.create(engine='text.davinci-003',
+        prompt = "Give a tip on how people can come toeghter", 
+        max_tokens=100,  # Adjust the number of tokens as per your requirements
+        temperature=0.3,  # Adjust the temperature value to control the output randomness
+        top_p=1.0,  # Adjust the top_p value to control the diversity of the output
+        n=1,  # Adjust the number of responses to generate
+        stop=None,  # You can specify a custom stop sequence if needed
+        timeout=15,  # Timeout in seconds (optional)       
+        )
+    return response
 
 # giving community data
 @app.get("/givecom{user}")
